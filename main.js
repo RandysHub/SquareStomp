@@ -1,7 +1,7 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
-canvas.height = innerHeight;
+canvas.height = innerHeight - 10
 canvas.width = innerWidth;
 
 class Player {
@@ -20,8 +20,8 @@ class Player {
         this.color = color
     }
     show() {
-        c.fillStyle = 'black'
-        c.fillRect(0, 0, canvas.width, canvas.height)
+        // c.fillStyle = 'black'
+        // c.fillRect(0, 0, canvas.width, canvas.height)
         c.fillStyle = this.color
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
@@ -45,7 +45,7 @@ class Plat {
 }
 //players
 const user = new Player(10, 10, 'orange');
-const user2 = new Player(canvas.width - 10, canvas.height - 10, 'blue')
+const user2 = new Player(canvas.width - 100, 100, 'blue')
 //platforms
 const platBL = new Plat(0, 700, 550, 30, 'white')
 const platBR = new Plat(canvas.width - 550, 700, 550, 30, 'white')
@@ -115,13 +115,13 @@ let game = (player) => {
     collision(user, platTL)
     collision(user, platTR)
 
+    collision(user2, platBL)
+    collision(user2, platBR)
+    collision(user2, platMid)
+    collision(user2, floor)
+    collision(user2, platTL)
+    collision(user2, platTR)
 
-    //floor
-    // if (player.position.y > canvas.height - 50 - player.height) {
-    //     player.velocity.y = 0;
-    //     player.jumping = false;
-    //     player.position.y = canvas.height - 50 - player.height;
-    // }
 
     //loop to the other side when you hit the edge
     if (player.position.x < -player.width) {
@@ -135,6 +135,7 @@ let game = (player) => {
 
 
 user.show();
+user2.show();
 platBL.show();
 platBR.show();
 // cpu.show();
@@ -142,6 +143,7 @@ platBR.show();
 const animate = () => {
     requestAnimationFrame(animate)
     c.clearRect(0, 0, canvas.width, canvas.height)
+    user2.show();
     user.show();
     platBL.show()
     platBR.show();
@@ -154,6 +156,7 @@ const animate = () => {
 
     // cpu.show();
     game(user);
+    game(user2)
 }
 
 animate();
