@@ -3,7 +3,6 @@ const c = canvas.getContext('2d')
 
 canvas.height = innerHeight;
 canvas.width = innerWidth;
-canvas.margin = 0;
 
 class Player {
     constructor(xValue, yValue, color) {
@@ -15,8 +14,8 @@ class Player {
             x: 0,
             y: 2
         }
-        this.width = 100
-        this.height = 100
+        this.width = 75
+        this.height = 75
         this.jumping = false;
         this.color = color
     }
@@ -45,10 +44,10 @@ class Plat {
     }
 }
 
-const user = new Player(500, 500, 'orange');
+const user = new Player(10, 10, 'orange');
 // const cpu = new Player(700, 500, 'blue')
 
-const plat1 = new Plat(600, 400, 150, 30, 'white')
+const plat1 = new Plat(0, 600, 650, 30, 'white')
 
 let controller = {
     left: false,
@@ -94,30 +93,20 @@ let game = (player) => {
     player.velocity.y *= 0.9;
 
     //plat 1 collision
-    // if (player.position.x < plat1.position.x + plat1.width &&
-    //     player.position.x + player.width > plat1.position.x &&
-    //     player.position.y < plat1.position.y + plat1.height &&
-    //     player.position.y + player.height > plat1.position.y
-    // ) {
-    //     player.velocity.y = 0
-    //     // player.velocity.y -= 1.3
-    //     player.postion.y = plat1.position.y
-    // }
-
     if (player.position.y + player.height > plat1.position.y &&
         player.position.x < plat1.position.x + plat1.width &&
         player.position.x + player.width > plat1.position.x &&
         player.position.y < plat1.position.y + plat1.height
     ) {
-        player.position.y = plat1.position.y - plat1.height - player.height + 28.6
+        player.position.y = plat1.position.y - plat1.height - player.height + 28.6  //Idk why 28.6 but it works. I must've messed up somewhere
         player.velocity.y = 0;
         player.jumping = false;
     }
     //floor
-    if (player.position.y > canvas.height - 300 - player.height) {
+    if (player.position.y > canvas.height - 50 - player.height) {
         player.velocity.y = 0;
         player.jumping = false;
-        player.position.y = canvas.height - 300 - player.height;
+        player.position.y = canvas.height - 50 - player.height;
     }
 
     //loop to the other side when you hit the edge
