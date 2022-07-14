@@ -14,8 +14,8 @@ class Player {
             x: 0,
             y: 2
         }
-        this.width = 75
-        this.height = 75
+        this.width = 50
+        this.height = 50
         this.jumping = false;
         this.color = color
     }
@@ -43,11 +43,16 @@ class Plat {
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
 }
-
+//players
 const user = new Player(10, 10, 'orange');
-// const cpu = new Player(700, 500, 'blue')
-
-const plat1 = new Plat(0, 600, 650, 30, 'white')
+const user2 = new Player(canvas.width - 10, canvas.height - 10, 'blue')
+//platforms
+const platBL = new Plat(0, 700, 550, 30, 'white')
+const platBR = new Plat(canvas.width - 550, 700, 550, 30, 'white')
+const platMid = new Plat(canvas.width / 2 - 325, 500, 650, 30, 'white')
+const floor = new Plat(0, canvas.height, canvas.width, 30, 'blue')
+const platTL = new Plat(0, 250, 550, 30, 'white')
+const platTR = new Plat(canvas.width - 550, 250, 550, 30, 'white')
 
 let controller = {
     left: false,
@@ -71,19 +76,29 @@ let controller = {
         }
     }
 }
-
+const collision = (player, plat) => {
+    if (player.position.y + player.height > plat.position.y &&
+        player.position.x < plat.position.x + plat.width &&
+        player.position.x + player.width > plat.position.x &&
+        player.position.y < plat.position.y + plat.height
+    ) {
+        player.position.y = plat.position.y - plat.height - player.height + 29.6  //Idk why 28.6 but it works. I must've messed up somewhere
+        player.velocity.y = 0;
+        player.jumping = false;
+    }
+}
 let game = (player) => {
     if (controller.up && player.jumping === false) {
-        player.velocity.y -= 60;
+        player.velocity.y -= 50;
         player.jumping = true;
     }
     if (controller.left) {
-        player.velocity.x -= 1.5;
+        player.velocity.x -= 1;
     }
     if (controller.right) {
-        player.velocity.x += 1.5;
-    }
+        player.velocity.x += 1;
 
+    }
     //Gravity!!!
     player.velocity.y += 1.3;
     player.position.x += player.velocity.x;
@@ -93,21 +108,20 @@ let game = (player) => {
     player.velocity.y *= 0.9;
 
     //plat 1 collision
-    if (player.position.y + player.height > plat1.position.y &&
-        player.position.x < plat1.position.x + plat1.width &&
-        player.position.x + player.width > plat1.position.x &&
-        player.position.y < plat1.position.y + plat1.height
-    ) {
-        player.position.y = plat1.position.y - plat1.height - player.height + 28.6  //Idk why 28.6 but it works. I must've messed up somewhere
-        player.velocity.y = 0;
-        player.jumping = false;
-    }
+    collision(user, platBL)
+    collision(user, platBR)
+    collision(user, platMid)
+    collision(user, floor)
+    collision(user, platTL)
+    collision(user, platTR)
+
+
     //floor
-    if (player.position.y > canvas.height - 50 - player.height) {
-        player.velocity.y = 0;
-        player.jumping = false;
-        player.position.y = canvas.height - 50 - player.height;
-    }
+    // if (player.position.y > canvas.height - 50 - player.height) {
+    //     player.velocity.y = 0;
+    //     player.jumping = false;
+    //     player.position.y = canvas.height - 50 - player.height;
+    // }
 
     //loop to the other side when you hit the edge
     if (player.position.x < -player.width) {
@@ -121,14 +135,20 @@ let game = (player) => {
 
 
 user.show();
-plat1.show();
+platBL.show();
+platBR.show();
 // cpu.show();
 
 const animate = () => {
     requestAnimationFrame(animate)
     c.clearRect(0, 0, canvas.width, canvas.height)
     user.show();
-    plat1.show()
+    platBL.show()
+    platBR.show();
+    platMid.show();
+    floor.show();
+    platTL.show();
+    platTR.show();
 
     //if the bottom of the square is above the platform
 
