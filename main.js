@@ -87,6 +87,22 @@ const collision = (player, plat) => {
         player.jumping = false;
     }
 }
+const collisionAll = () => {
+    collision(user, platBL)
+    collision(user, platBR)
+    collision(user, platMid)
+    collision(user, floor)
+    collision(user, platTL)
+    collision(user, platTR)
+
+    collision(user2, platBL)
+    collision(user2, platBR)
+    collision(user2, platMid)
+    collision(user2, floor)
+    collision(user2, platTL)
+    collision(user2, platTR)
+
+}
 let game = (player) => {
     if (controller.up && player.jumping === false) {
         player.velocity.y -= 50;
@@ -108,20 +124,7 @@ let game = (player) => {
     player.velocity.y *= 0.9;
 
     //plat 1 collision
-    collision(user, platBL)
-    collision(user, platBR)
-    collision(user, platMid)
-    collision(user, floor)
-    collision(user, platTL)
-    collision(user, platTR)
-
-    collision(user2, platBL)
-    collision(user2, platBR)
-    collision(user2, platMid)
-    collision(user2, floor)
-    collision(user2, platTL)
-    collision(user2, platTR)
-
+    collisionAll();
 
     //loop to the other side when you hit the edge
     if (player.position.x < -player.width) {
@@ -142,6 +145,7 @@ platBR.show();
 
 const animate = () => {
     requestAnimationFrame(animate)
+    //this is what's clearing the canvas everyframe.
     c.clearRect(0, 0, canvas.width, canvas.height)
     user2.show();
     user.show();
