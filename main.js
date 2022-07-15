@@ -21,8 +21,6 @@ class Player {
         this.color = color
     }
     show() {
-        // c.fillStyle = 'black'
-        // c.fillRect(0, 0, canvas.width, canvas.height)
         c.fillStyle = this.color
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
@@ -45,8 +43,33 @@ class Plat {
     }
 }
 //players
-const user = new Player(50, 10, 'orange');
+let itemLocations = {
+    first: {
+        x: 100,
+        y: canvas.height - 200
+    },
+    second: {
+        x: canvas.width - 100,
+        y: canvas.height - 200
+    },
+    third: {
+        x: canvas.width / 2,
+        y: 400
+    }
+}
+// const randomizeItem = () => {
+//     let num = Math.random() * 3
+//     let x;
+//     let y;
+
+//     switch (num) {
+//         case 0:
+//             x = 
+//     }
+// }
+const user = new Player(20, 50, 'orange');
 const user2 = new Player(canvas.width - 100, 100, 'blue')
+const item1 = new Player(itemLocations.third.x, itemLocations.third.y, 'black')
 //platforms
 const platBL = new Plat(0, 700, 550, 30, 'white')
 const platBR = new Plat(canvas.width - 550, 700, 550, 30, 'white')
@@ -99,6 +122,28 @@ let controller2 = {
         }
     }
 }
+let controller3 = {
+    left: false,
+    right: false,
+    up: false,
+
+    keyChecker: (event) => {
+        let keyState = (event.type === 'keydown') ? true : false;
+
+        switch (event.keyCode) {
+
+            case 1:
+                controller1.up = keyState;
+                break;
+            case 2:
+                controller1.left = keyState;
+                break;
+            case 3:
+                controller1.right = keyState;
+                break;
+        }
+    }
+}
 const collision = (player, plat) => {
     if (player.position.y + player.height > plat.position.y &&
         player.position.x < plat.position.x + plat.width &&
@@ -111,6 +156,7 @@ const collision = (player, plat) => {
         player.falling = false;
     }
 }
+// user.height = 80
 const collisionAll = () => {
     collision(user, platBL)
     collision(user, platBR)
@@ -126,8 +172,24 @@ const collisionAll = () => {
     collision(user2, platTL)
     collision(user2, platTR)
 
+    collision(item1, platMid)
+    collision(item1, floor)
 }
-const playerMovement = (player, player2, controller) => {
+const showAll = () => {
+    user2.show();
+    user.show();
+
+    item1.show();
+
+    platBL.show();
+    platBR.show();
+    platMid.show();
+    floor.show();
+    platTL.show();
+    platTR.show();
+
+}
+const playerMovement = (player, player2, item, controller) => {
     // Tried to make it so you can't jump when falling off of platforms :<
     if (player.velocity.y > 0) {
         player.falling = true;
@@ -163,20 +225,52 @@ const playerMovement = (player, player2, controller) => {
     } else if (player.position.x > canvas.width) {
         player.position.x = -player.width;
     }
-    //Attempts at implementing bonking
+    //Bonking player
     if (player.position.y + player.height > player2.position.y &&
         player.position.x < player2.position.x + player2.width &&
         player.position.x + player.width > player2.position.x &&
-        player.position.y < player2.position.y + player2.height && player.falling === true) {
+        player.position.y < player2.position.y + player2.height &&
+        player.falling === true) {
+
+
+
         player.velocity.y -= 65
 
+        //tried to make jumping on them reset
+        // player.height += 50
+        // player2.position.x = canvas.width - 100
+        // player2.position.y = 100
+
         //add scoring
+
+    }
+    // Bonking item
+    if (player.position.y + player.height > item.position.y &&
+        player.position.x < item.position.x + item.width &&
+        player.position.x + player.width > item.position.x &&
+        player.position.y < item.position.y + item.height &&
+        player.falling === true) {
+
+        player.velocity.y -= 65
+
+        //tried to make jumping on them reset
+        // player.height += 50
+        // player2.position.x = canvas.width - 100
+        // player2.position.y = 100
+
+        //add scoring
+
     }
 
 }
+const itemPhysics = (item) => {
+    item.position.y += item.velocity.y
+    item.velocity.y += 1.3
+
+}
 let game = () => {
-    playerMovement(user, user2, controller1)
-    playerMovement(user2, user, controller2)
+    playerMovement(user, user2, item1, controller1)
+    playerMovement(user2, user, item1, controller2)
     //plat 1 collision
     collisionAll();
 
@@ -186,14 +280,7 @@ const animate = () => {
     requestAnimationFrame(animate)
     //this is what's clearing the canvas everyframe.
     c.clearRect(0, 0, canvas.width, canvas.height)
-    user2.show();
-    user.show();
-    platBL.show()
-    platBR.show();
-    platMid.show();
-    floor.show();
-    platTL.show();
-    platTR.show();
+    showAll();
 
     game();
 }
