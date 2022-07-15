@@ -1,7 +1,7 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
-canvas.height = innerHeight - 10
+canvas.height = innerHeight - 4 //Idk what's going on but subtracting 4 or more makes it so that the scrolling goes away
 canvas.width = innerWidth;
 
 class Player {
@@ -17,6 +17,7 @@ class Player {
         this.width = 50
         this.height = 50
         this.jumping = false;
+        this.falling = false;
         this.color = color
     }
     show() {
@@ -44,17 +45,17 @@ class Plat {
     }
 }
 //players
-const user = new Player(10, 10, 'orange');
+const user = new Player(50, 10, 'orange');
 const user2 = new Player(canvas.width - 100, 100, 'blue')
 //platforms
 const platBL = new Plat(0, 700, 550, 30, 'white')
 const platBR = new Plat(canvas.width - 550, 700, 550, 30, 'white')
 const platMid = new Plat(canvas.width / 2 - 325, 500, 650, 30, 'white')
-const floor = new Plat(0, canvas.height, canvas.width, 30, 'blue')
+const floor = new Plat(0, canvas.height - 30, canvas.width, 30, 'white')
 const platTL = new Plat(0, 250, 550, 30, 'white')
 const platTR = new Plat(canvas.width - 550, 250, 550, 30, 'white')
 
-let controller = {
+let controller1 = {
     left: false,
     right: false,
     up: false,
@@ -65,13 +66,35 @@ let controller = {
         switch (event.keyCode) {
 
             case 87:
-                controller.up = keyState;
+                controller1.up = keyState;
                 break;
             case 65:
-                controller.left = keyState;
+                controller1.left = keyState;
                 break;
             case 68:
-                controller.right = keyState;
+                controller1.right = keyState;
+                break;
+        }
+    }
+}
+let controller2 = {
+    left: false,
+    right: false,
+    up: false,
+
+    keyChecker: (event) => {
+        let keyState = (event.type === 'keydown') ? true : false;
+
+        switch (event.keyCode) {
+
+            case 73:
+                controller2.up = keyState;
+                break;
+            case 74:
+                controller2.left = keyState;
+                break;
+            case 76:
+                controller2.right = keyState;
                 break;
         }
     }
@@ -80,11 +103,12 @@ const collision = (player, plat) => {
     if (player.position.y + player.height > plat.position.y &&
         player.position.x < plat.position.x + plat.width &&
         player.position.x + player.width > plat.position.x &&
-        player.position.y < plat.position.y + plat.height
+        player.position.y < plat.position.y + plat.height && player.falling === true
     ) {
-        player.position.y = plat.position.y - plat.height - player.height + 29.6  //Idk why 28.6 but it works. I must've messed up somewhere
-        player.velocity.y = 0;
+        player.position.y = plat.position.y - player.height    //Idk why 28.6 but it works. I must've messed up somewhere
+        player.velocity.y = -1;
         player.jumping = false;
+        player.falling = false;
     }
 }
 const collisionAll = () => {
@@ -103,7 +127,14 @@ const collisionAll = () => {
     collision(user2, platTR)
 
 }
-let game = (player) => {
+const playerMovement = (player, player2, controller) => {
+    // Tried to make it so you can't jump when falling off of platforms :<
+    if (player.velocity.y > 0) {
+        player.falling = true;
+    }
+    if (player.falling) {
+        player.jumping = true;
+    }
     if (controller.up && player.jumping === false) {
         player.velocity.y -= 50;
         player.jumping = true;
@@ -119,29 +150,37 @@ let game = (player) => {
     player.velocity.y += 1.3;
     player.position.x += player.velocity.x;
     player.position.y += player.velocity.y;
+
     //Friction
+
     player.velocity.x *= 0.9;
     player.velocity.y *= 0.9;
 
-    //plat 1 collision
-    collisionAll();
-
     //loop to the other side when you hit the edge
+
     if (player.position.x < -player.width) {
         player.position.x = canvas.width;
     } else if (player.position.x > canvas.width) {
         player.position.x = -player.width;
     }
+    //Attempts at implementing bonking
+    if (player.position.y + player.height > player2.position.y &&
+        player.position.x < player2.position.x + player2.width &&
+        player.position.x + player.width > player2.position.x &&
+        player.position.y < player2.position.y + player2.height && player.falling === true) {
+        player.velocity.y -= 65
+
+        //add scoring
+    }
+
 }
+let game = () => {
+    playerMovement(user, user2, controller1)
+    playerMovement(user2, user, controller2)
+    //plat 1 collision
+    collisionAll();
 
-
-
-
-user.show();
-user2.show();
-platBL.show();
-platBR.show();
-// cpu.show();
+}
 
 const animate = () => {
     requestAnimationFrame(animate)
@@ -156,19 +195,16 @@ const animate = () => {
     platTL.show();
     platTR.show();
 
-    //if the bottom of the square is above the platform
-
-    // cpu.show();
-    game(user);
-    game(user2)
+    game();
 }
-
 animate();
 
 
 
 
 
-addEventListener("keydown", controller.keyChecker)
-addEventListener('keyup', controller.keyChecker)
-// addEventListener('keydown', (e) => console.log(e.keyCode))
+addEventListener("keydown", controller1.keyChecker)
+addEventListener('keyup', controller1.keyChecker)
+
+addEventListener("keydown", controller2.keyChecker)
+addEventListener("keyup", controller2.keyChecker)

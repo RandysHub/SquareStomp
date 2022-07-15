@@ -4,5 +4,6 @@ body {
 }
 
 canvas {
-    background-color: black;
+    /* background-color: black */
+    background-image: url("background.png");
 }
