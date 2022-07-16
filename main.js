@@ -18,7 +18,8 @@ class Player {
         this.height = 50
         this.jumping = false;
         this.falling = false;
-        this.color = color
+        this.color = color;
+        this.hp = 3;
     }
     show() {
         c.fillStyle = this.color
@@ -220,6 +221,7 @@ const playerMovement = (player, player2, item, controller) => {
 
     //loop to the other side when you hit the edge
 
+
     if (player.position.x < -player.width) {
         player.position.x = canvas.width;
     } else if (player.position.x > canvas.width) {
@@ -232,17 +234,16 @@ const playerMovement = (player, player2, item, controller) => {
         player.position.y < player2.position.y + player2.height &&
         player.falling === true) {
 
-
-
         player.velocity.y -= 65
 
-        //tried to make jumping on them reset
-        // player.height += 50
-        // player2.position.x = canvas.width - 100
-        // player2.position.y = 100
-
-        //add scoring
-
+        // Tried to give them health and kill them after 3 hits. It's still being dumb with colission stuff.
+        // player2.hp -= 1
+        // console.log(player2.hp)
+        // if (player2.hp === 0) {
+        //     player2.position.y = 0
+        //     player2.position.x = canvas.width / 2
+        //     player2.hp = 0
+        // }
     }
     // Bonking item
     if (player.position.y + player.height > item.position.y &&
@@ -252,25 +253,20 @@ const playerMovement = (player, player2, item, controller) => {
         player.falling === true) {
 
         player.velocity.y -= 65
-
-        //tried to make jumping on them reset
-        // player.height += 50
-        // player2.position.x = canvas.width - 100
-        // player2.position.y = 100
-
-        //add scoring
-
+        player.velocity.x *= 1.1
     }
 
-}
-const itemPhysics = (item) => {
-    item.position.y += item.velocity.y
-    item.velocity.y += 1.3
 
 }
+// const itemPhysics = (item) => {
+//     item.position.y += item.velocity.y
+//     item.velocity.y += 1.3
+
+// }
 let game = () => {
     playerMovement(user, user2, item1, controller1)
     playerMovement(user2, user, item1, controller2)
+    playerMovement(item1, user, user2, controller3)
     //plat 1 collision
     collisionAll();
 
