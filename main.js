@@ -19,7 +19,7 @@ class Player {
         this.jumping = false;
         this.falling = false;
         this.color = color;
-        this.hp = 3;
+        this.hp = 3; //probably don't need this anymore
     }
     show() {
         c.fillStyle = this.color
@@ -58,20 +58,18 @@ let itemLocations = {
         y: 400
     }
 }
-// const randomizeItem = () => {
-//     let num = Math.random() * 3
-//     let x;
-//     let y;
 
-//     switch (num) {
-//         case 0:
-//             x = 
-//     }
-// }
+// Players
+
 const user = new Player(20, 50, 'orange');
 const user2 = new Player(canvas.width - 100, 100, 'blue')
+
+// Items
+
 const item1 = new Player(itemLocations.third.x, itemLocations.third.y, 'black')
+
 //platforms
+
 const platBL = new Plat(0, 700, 550, 30, 'white')
 const platBR = new Plat(canvas.width - 550, 700, 550, 30, 'white')
 const platMid = new Plat(canvas.width / 2 - 325, 500, 650, 30, 'white')
@@ -175,6 +173,11 @@ const collisionAll = () => {
 
     collision(item1, platMid)
     collision(item1, floor)
+    collision(item1, platBL)
+    collision(item1, platBR)
+    collision(item1, platTL)
+    collision(item1, platTR)
+
 }
 const showAll = () => {
     user2.show();
@@ -188,7 +191,28 @@ const showAll = () => {
     floor.show();
     platTL.show();
     platTR.show();
+}
+const randomizeItem = () => {
+    let num = Math.floor(Math.random() * 3)
+    num = Math.random() * 3
+    switch (num) {
+        case 0:
+            item1.position.x = itemLocations.first.x
+            item1.position.y = itemLocations.first.y
+            break;
+        case 1:
+            item1.position.x = itemLocations.second.x
+            item1.position.y = itemLocations.second.y
+            break;
+        case 2:
+            item1.position.x = itemLocations.third.x
+            item1.position.y = itemLocations.third.y
+            break;
+        default:
+            item1.position.x = itemLocations.first.x
+            item1.position.y = itemLocations.first.y
 
+    }
 }
 const playerMovement = (player, player2, item, controller) => {
     // Tried to make it so you can't jump when falling off of platforms :<
@@ -209,24 +233,25 @@ const playerMovement = (player, player2, item, controller) => {
         player.velocity.x += 1;
 
     }
+
     //Gravity!!!
     player.velocity.y += 1.3;
     player.position.x += player.velocity.x;
     player.position.y += player.velocity.y;
 
-    //Friction
 
+    //Friction
     player.velocity.x *= 0.9;
     player.velocity.y *= 0.9;
 
+
     //loop to the other side when you hit the edge
-
-
     if (player.position.x < -player.width) {
         player.position.x = canvas.width;
     } else if (player.position.x > canvas.width) {
         player.position.x = -player.width;
     }
+
     //Bonking player
     if (player.position.y + player.height > player2.position.y &&
         player.position.x < player2.position.x + player2.width &&
@@ -245,6 +270,7 @@ const playerMovement = (player, player2, item, controller) => {
         //     player2.hp = 0
         // }
     }
+
     // Bonking item
     if (player.position.y + player.height > item.position.y &&
         player.position.x < item.position.x + item.width &&
@@ -253,23 +279,17 @@ const playerMovement = (player, player2, item, controller) => {
         player.falling === true) {
 
         player.velocity.y -= 65
-        player.velocity.x *= 1.1
+        randomizeItem();
     }
 
 
 }
-// const itemPhysics = (item) => {
-//     item.position.y += item.velocity.y
-//     item.velocity.y += 1.3
 
-// }
 let game = () => {
     playerMovement(user, user2, item1, controller1)
     playerMovement(user2, user, item1, controller2)
     playerMovement(item1, user, user2, controller3)
-    //plat 1 collision
     collisionAll();
-
 }
 
 const animate = () => {
@@ -277,17 +297,14 @@ const animate = () => {
     //this is what's clearing the canvas everyframe.
     c.clearRect(0, 0, canvas.width, canvas.height)
     showAll();
-
     game();
 }
+
 animate();
-
-
-
-
-
+// Controller 1
 addEventListener("keydown", controller1.keyChecker)
 addEventListener('keyup', controller1.keyChecker)
 
+// Controller 2
 addEventListener("keydown", controller2.keyChecker)
 addEventListener("keyup", controller2.keyChecker)
