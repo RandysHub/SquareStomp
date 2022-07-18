@@ -5,7 +5,10 @@ const c = canvas.getContext('2d')
 canvas.height = innerHeight - 4 //Idk what's going on but subtracting 4 or more makes it so that the scrolling goes away
 canvas.width = innerWidth;
 
-
+// const platBackgrounds = new Image
+// platBackgrounds.src = "platforms.png"
+let img = document.querySelector('#platBG')
+let platPattern = c.createPattern(img, "repeat-x")
 class Player {
     constructor(xValue, yValue, color) {
         this.position = {
@@ -25,11 +28,14 @@ class Player {
         this.score = 0
     }
     show() {
+        this.width = 50;
+        this.height = 50
         c.fillStyle = this.color
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
     hide() {
-
+        item1.width = 0;
+        item1.height = 0;
     }
 
 }
@@ -45,8 +51,11 @@ class Plat {
         this.color = color
     }
     show() {
-        c.fillStyle = this.color
+        // I tried to draw the backgrounds using canvas but I can't figure it out for now. 
+        c.fillStyle = 'black'
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        // c.clip();
+        // c.drawImage(image, this.position.x, position.y)
     }
 }
 
@@ -79,6 +88,21 @@ let itemLocations = {
 const user = new Player(20, 50, 'orange');
 const user2 = new Player(canvas.width - 300, 100, 'blue')
 
+let init = () => {
+
+    user.position.x = 20;
+    user.position.y = 50;
+    user.score = 0
+
+
+    user2.position.x = canvas.width - 300;
+    user2.position.y = 100;
+    user2.score = 0
+
+    item1.position.x = itemLocations.third.x
+    item1.position.y = itemLocations.third.y
+
+}
 //Scoreboard 
 let p1ScoreDisplay = document.querySelector('#p1')
 p1ScoreDisplay.innerHTML = 'Player 1 : ' + user.score
@@ -88,7 +112,7 @@ let p2Score = 0;
 p2ScoreDisplay.innerHTML = 'Player 2: ' + p2Score
 // Items
 
-const item1 = new Player(itemLocations.third.x, itemLocations.third.y, 'black')
+const item1 = new Player(itemLocations.third.x, itemLocations.third.y, 'khaki')
 
 //platforms
 
@@ -96,7 +120,7 @@ const platBL = new Plat(0, 700, 550, 30, 'white')
 const platBR = new Plat(canvas.width - 550, 700, 550, 30, 'white')
 const platMid = new Plat(canvas.width / 2 - 325, 500, 650, 30, 'white')
 const floor = new Plat(0, canvas.height - 30, canvas.width, 30, 'white')
-const platTL = new Plat(0, 250, 550, 30, 'white')
+const platTL = new Plat(0, 250, 550, 50, 'white')
 const platTR = new Plat(canvas.width - 550, 250, 550, 30, 'white')
 
 // Controllers
@@ -240,12 +264,15 @@ const randomizeItem = (num) => {
         case 3:
             item1.position.x = itemLocations.fourth.x
             item1.position.y = itemLocations.fourth.y
+            break;
         case 4:
             item1.position.x = itemLocations.fifth.x
             item1.position.y = itemLocations.fifth.y
+            break;
         default:
             item1.position.x = itemLocations.third.x
             item1.position.y = itemLocations.third.y
+            break;
 
     }
 }
@@ -329,13 +356,22 @@ const playerMovement = (player, player2, item, controller) => {
         } else if (player === user2) {
             p2ScoreDisplay.innerHTML = 'Player 2 : ' + user2.score
         }
-
+        item.hide();
+        setTimeout(item.show(), 2000)
         randomizeItem(num);
     }
 
 
 }
-
+let gameOver = () => {
+    if (user.score === 1) {
+        alert('Player 1 wins!')
+        init()
+    } else if (user2.score === 10) {
+        alert('Player 2 wins!')
+        init()
+    }
+}
 let game = () => {
     playerMovement(user, user2, item1, controller1)
     playerMovement(user2, user, item1, controller2)
@@ -349,6 +385,7 @@ const animate = () => {
     c.clearRect(0, 0, canvas.width, canvas.height)
     showAll();
     game();
+    gameOver();
 }
 
 animate();
