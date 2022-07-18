@@ -15,4 +15,32 @@ canvas {
 
 #p1 {
     font-size: 30px;
+    position: absolute;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    top: 3%;
+    left: 28%;
+    background-color: orange;
+    height: 50px;
+    width: 20vh;
+    border: 1px solid black;
+    border-radius: 40%;
+
+}
+
+#p2 {
+    font-size: 30px;
+    position: absolute;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    top: 5%;
+    right: 28%;
+    background-color: blue;
+    height: 50px;
+    width: 20vh;
+    border: 1px solid black;
+    border-radius: 40%;
+
 }

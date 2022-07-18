@@ -1,8 +1,10 @@
+// Canvas Stuff
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
 canvas.height = innerHeight - 4 //Idk what's going on but subtracting 4 or more makes it so that the scrolling goes away
 canvas.width = innerWidth;
+
 
 class Player {
     constructor(xValue, yValue, color) {
@@ -20,10 +22,14 @@ class Player {
         this.falling = false;
         this.color = color;
         this.hp = 3; //probably don't need this anymore
+        this.score = 0
     }
     show() {
         c.fillStyle = this.color
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
+    }
+    hide() {
+
     }
 
 }
@@ -43,6 +49,7 @@ class Plat {
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
 }
+
 //players
 let itemLocations = {
     first: {
@@ -56,14 +63,29 @@ let itemLocations = {
     third: {
         x: canvas.width / 2,
         y: 400
+    },
+    fourth: {
+        x: 100,
+        y: 0
+    },
+    fifth: {
+        x: canvas.width - 100,
+        y: 200
     }
 }
 
 // Players
 
 const user = new Player(20, 50, 'orange');
-const user2 = new Player(canvas.width - 100, 100, 'blue')
+const user2 = new Player(canvas.width - 300, 100, 'blue')
 
+//Scoreboard 
+let p1ScoreDisplay = document.querySelector('#p1')
+p1ScoreDisplay.innerHTML = 'Player 1 : ' + user.score
+
+let p2ScoreDisplay = document.querySelector('#p2')
+let p2Score = 0;
+p2ScoreDisplay.innerHTML = 'Player 2: ' + p2Score
 // Items
 
 const item1 = new Player(itemLocations.third.x, itemLocations.third.y, 'black')
@@ -77,10 +99,12 @@ const floor = new Plat(0, canvas.height - 30, canvas.width, 30, 'white')
 const platTL = new Plat(0, 250, 550, 30, 'white')
 const platTR = new Plat(canvas.width - 550, 250, 550, 30, 'white')
 
+// Controllers
 let controller1 = {
     left: false,
     right: false,
     up: false,
+    action: false,
 
     keyChecker: (event) => {
         let keyState = (event.type === 'keydown') ? true : false;
@@ -96,6 +120,8 @@ let controller1 = {
             case 68:
                 controller1.right = keyState;
                 break;
+            case 69:
+                controller1.action = keyState;
         }
     }
 }
@@ -143,6 +169,7 @@ let controller3 = {
         }
     }
 }
+
 const collision = (player, plat) => {
     if (player.position.y + player.height > plat.position.y &&
         player.position.x < plat.position.x + plat.width &&
@@ -179,6 +206,7 @@ const collisionAll = () => {
     collision(item1, platTR)
 
 }
+
 const showAll = () => {
     user2.show();
     user.show();
@@ -192,9 +220,10 @@ const showAll = () => {
     platTL.show();
     platTR.show();
 }
-const randomizeItem = () => {
-    let num = Math.floor(Math.random() * 3)
-    num = Math.random() * 3
+
+let num;
+const randomizeItem = (num) => {
+    num = Math.floor(Math.random() * 5)
     switch (num) {
         case 0:
             item1.position.x = itemLocations.first.x
@@ -208,9 +237,15 @@ const randomizeItem = () => {
             item1.position.x = itemLocations.third.x
             item1.position.y = itemLocations.third.y
             break;
+        case 3:
+            item1.position.x = itemLocations.fourth.x
+            item1.position.y = itemLocations.fourth.y
+        case 4:
+            item1.position.x = itemLocations.fifth.x
+            item1.position.y = itemLocations.fifth.y
         default:
-            item1.position.x = itemLocations.first.x
-            item1.position.y = itemLocations.first.y
+            item1.position.x = itemLocations.third.x
+            item1.position.y = itemLocations.third.y
 
     }
 }
@@ -234,6 +269,14 @@ const playerMovement = (player, player2, item, controller) => {
 
     }
 
+    if (controller.action && controller.right) {
+        player.velocity.x += 2
+        player.velocity.y -= 1.3
+    }
+    if (controller.action && controller.left) {
+        player.velocity.x -= 2
+        player.velocity.y -= 1.3
+    }
     //Gravity!!!
     player.velocity.y += 1.3;
     player.position.x += player.velocity.x;
@@ -257,7 +300,8 @@ const playerMovement = (player, player2, item, controller) => {
         player.position.x < player2.position.x + player2.width &&
         player.position.x + player.width > player2.position.x &&
         player.position.y < player2.position.y + player2.height &&
-        player.falling === true) {
+        player.falling === true &&
+        player !== item1) {
 
         player.velocity.y -= 65
 
@@ -279,7 +323,14 @@ const playerMovement = (player, player2, item, controller) => {
         player.falling === true) {
 
         player.velocity.y -= 65
-        randomizeItem();
+        player.score += 1
+        if (player === user) {
+            p1ScoreDisplay.innerHTML = 'Player 1 : ' + user.score
+        } else if (player === user2) {
+            p2ScoreDisplay.innerHTML = 'Player 2 : ' + user2.score
+        }
+
+        randomizeItem(num);
     }
 
 
