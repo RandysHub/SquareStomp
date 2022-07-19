@@ -4,7 +4,18 @@ const c = canvas.getContext('2d')
 
 canvas.height = innerHeight - 4 //Idk what's going on but subtracting 4 or more makes it so that the scrolling goes away
 canvas.width = innerWidth;
-// import image from "./images/platforms.png"
+
+const popup = document.querySelector('#gameStart')
+const multi = document.querySelector('#multiPlayer')
+const single = document.querySelector('#singlePlayer')
+const pop = ele => {
+    ele.classList.add('open-popup')
+}
+const unpop = ele => {
+
+    ele.classList.remove('open-popup')
+}
+pop(popup);
 
 class Player {
     constructor(xValue, yValue, color) {
@@ -31,7 +42,7 @@ class Player {
         c.fillStyle = this.color
         // c.rect(this.position.x, this.position.y, this.width, this.height)
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
-        c.lineWidth = 2;
+        c.lineWidth = 3;
         c.strokeStyle = 'black'
         c.strokeRect(this.position.x, this.position.y, this.width, this.height);
         // c.clearRect(0, 0, canvas.width, canvas.height)
@@ -88,8 +99,8 @@ let itemLocations = {
 
 // Players
 
-const user = new Player(20, 50, 'orange');
-const user2 = new Player(canvas.width - 300, 100, 'blue')
+const user = new Player(20, 50, '#cc0066');
+const user2 = new Player(canvas.width - 300, 100, '#66ffcc')
 
 let reset = () => {
 
@@ -115,7 +126,7 @@ let p2Score = 0;
 p2ScoreDisplay.innerHTML = 'Player 2: ' + p2Score
 // Items
 
-const item1 = new Player(itemLocations.third.x, itemLocations.third.y, 'khaki')
+const item1 = new Player(itemLocations.third.x, itemLocations.third.y, '#ffcc00')
 
 //platforms
 
@@ -248,6 +259,21 @@ const showAll = () => {
     user.show();
     item1.show();
 }
+const showSinglePlayer = () => {
+
+
+    platBL.show();
+    platBR.show();
+    platMid.show();
+    floor.show();
+    platTL.show();
+    platTR.show();
+
+    user.show();
+    item1.show();
+
+    p2ScoreDisplay.style.display = 'none'
+}
 
 let num;
 const randomizeItem = (num) => {
@@ -369,12 +395,16 @@ const playerMovement = (player, player2, item, controller) => {
 
 }
 let gameOver = () => {
+    let gameOverPopup = document.querySelector('#gameOver')
     if (user.score === 1) {
-        alert('Player 1 wins!')
+        pop(gameOverPopup)
+        // tried to make it so you can't move after the game ends
+        // user.controller = controller3
         reset()
     } else if (user2.score === 10) {
-        alert('Player 2 wins!')
+        pop(gameOverPopup)
         reset()
+        // user2.controller = controller3
     }
 }
 let game = () => {
@@ -390,10 +420,18 @@ const animate = () => {
     c.clearRect(0, 0, canvas.width, canvas.height)
     showAll();
     game();
-    // gameOver();
+    gameOver();
+}
+const animateSinglePlayer = () => {
+    requestAnimationFrame(animateSinglePlayer)
+    //this is what's clearing the canvas everyframe.
+    c.clearRect(0, 0, canvas.width, canvas.height)
+    showSinglePlayer();
+    game();
+    gameOver();
 }
 
-animate();
+
 // Controller 1
 addEventListener("keydown", controller1.keyChecker)
 addEventListener('keyup', controller1.keyChecker)
@@ -401,3 +439,10 @@ addEventListener('keyup', controller1.keyChecker)
 // Controller 2
 addEventListener("keydown", controller2.keyChecker)
 addEventListener("keyup", controller2.keyChecker)
+
+multi.addEventListener('click', function () {
+    animate()
+})
+single.addEventListener('click', function () {
+    animateSinglePlayer()
+})

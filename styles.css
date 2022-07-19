@@ -1,3 +1,9 @@
+* {
+    font-family: 'Lato', sans-serif;
+    font-family: 'Roboto Slab', serif;
+    font-weight: 600;
+}
+
 body {
     margin: 0;
     background-color: black;
@@ -8,7 +14,7 @@ body {
 }
 
 canvas {
-    background-image: url("/Platformer/images/background.png");
+    background-image: url("/Platformer/images/background.jpg");
 }
 
 
@@ -20,7 +26,7 @@ canvas {
     justify-content: center;
     top: 3%;
     left: 28%;
-    background-color: orange;
+    background-color: grey;
     height: 50px;
     width: 20vh;
     border: 1px solid black;
@@ -36,7 +42,7 @@ canvas {
     justify-content: center;
     top: 5%;
     right: 28%;
-    background-color: blue;
+    background-color: grey;
     height: 50px;
     width: 20vh;
     border: 1px solid black;
@@ -48,44 +54,116 @@ canvas {
 
 .plat {
     position: absolute;
-    background-image: url(./images/platforms.png);
+    background-image: url(./images/plat2.png);
     width: 550px;
     height: 50px;
+    border: 1px solid black;
 }
 
 #platTL {
     top: 252px;
     left: 0px;
-    border: 1px solid black;
 }
 
 #platTR {
     top: 252px;
     right: 0px;
-    border: 1px solid black;
 }
 
 #platBL {
     left: 0px;
     top: 702px;
-    border: 1px solid black;
 }
 
 #platBR {
     top: 702px;
     right: 0px;
-    border: 1px solid black;
 }
 
 #platMid {
     width: 650px;
     top: 502px;
-    border: 1px solid black;
 }
 
 #floor {
     width: 99.9%;
     bottom: 0px;
     height: 31px;
-    border: 1px solid black;
+    background-image: url(./images/plat3.png);
 }
+
+.popup {
+
+    width: 100%;
+    height: 100%;
+    /* background-image: url(); */
+    /* background-color: whitesmoke; */
+    /* border-radius: 6px; */
+    position: absolute;
+    top: 0%;
+    display: flex;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1);
+    visibility: hidden;
+    text-align: center;
+    padding: 0 30px 30px;
+    transition: transform 0.4s, top 0.4s;
+    z-index: 2;
+
+}
+
+.open-popup {
+    visibility: visible;
+    top: 52%;
+    transform: translate(-50%, -50%) scale(1);
+    /* border: 4px; */
+    /* border-color: cornflowerblue; */
+    /* border-radius: 20%; */
+    border-style: solid;
+    background-color: black;
+}
+
+.btn {
+    height: 200px;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    border-radius: 4px;
+    transition-duration: 0.9s;
+    font-size: 28px;
+    background-color: lightgray;
+}
+
+
+#singlePlayer {
+    top: 25%;
+    left: 5%;
+    border: 4px solid #cc0066;
+    color: #cc0066;
+}
+
+#singlePlayer:hover {
+    background-color: #cc0066;
+    color: lightgrey;
+}
+
+#multiPlayer {
+    top: 25%;
+    right: 5%;
+    border: 4px solid #00e699;
+    color: #00e699;
+
+}
+
+#multiPlayer:hover {
+    background-color: #00e699;
+    color: white;
+}
+
+#gameOver {
+    background-color: black;
+}
+
+/* #gameStart {} */
