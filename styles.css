@@ -8,8 +8,7 @@ body {
 }
 
 canvas {
-    /* background-color: black */
-    background-image: url("background.png");
+    background-image: url("/Platformer/images/background.png");
 }
 
 
@@ -45,16 +44,48 @@ canvas {
 
 }
 
-#platTL {
+/* Plat styling */
+
+.plat {
     position: absolute;
-    background-image: url(/Platformer/platforms.png);
-    top: 252px;
-    left: 0px;
+    background-image: url(./images/platforms.png);
     width: 550px;
     height: 50px;
 }
 
-#platBG {
-    position: absolute;
-    visibility: hidden;
+#platTL {
+    top: 252px;
+    left: 0px;
+    border: 1px solid black;
+}
+
+#platTR {
+    top: 252px;
+    right: 0px;
+    border: 1px solid black;
+}
+
+#platBL {
+    left: 0px;
+    top: 702px;
+    border: 1px solid black;
+}
+
+#platBR {
+    top: 702px;
+    right: 0px;
+    border: 1px solid black;
+}
+
+#platMid {
+    width: 650px;
+    top: 502px;
+    border: 1px solid black;
+}
+
+#floor {
+    width: 99.9%;
+    bottom: 0px;
+    height: 31px;
+    border: 1px solid black;
 }

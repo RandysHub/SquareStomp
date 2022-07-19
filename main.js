@@ -4,11 +4,8 @@ const c = canvas.getContext('2d')
 
 canvas.height = innerHeight - 4 //Idk what's going on but subtracting 4 or more makes it so that the scrolling goes away
 canvas.width = innerWidth;
+// import image from "./images/platforms.png"
 
-// const platBackgrounds = new Image
-// platBackgrounds.src = "platforms.png"
-let img = document.querySelector('#platBG')
-let platPattern = c.createPattern(img, "repeat-x")
 class Player {
     constructor(xValue, yValue, color) {
         this.position = {
@@ -28,10 +25,17 @@ class Player {
         this.score = 0
     }
     show() {
-        this.width = 50;
         this.height = 50
+        this.width = 50;
+
         c.fillStyle = this.color
+        // c.rect(this.position.x, this.position.y, this.width, this.height)
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        c.lineWidth = 2;
+        c.strokeStyle = 'black'
+        c.strokeRect(this.position.x, this.position.y, this.width, this.height);
+        // c.clearRect(0, 0, canvas.width, canvas.height)
+
     }
     hide() {
         item1.width = 0;
@@ -39,6 +43,7 @@ class Player {
     }
 
 }
+
 class Plat {
     constructor(xValue, yValue, w, h, color) {
         this.label = 'platform'
@@ -54,8 +59,6 @@ class Plat {
         // I tried to draw the backgrounds using canvas but I can't figure it out for now. 
         c.fillStyle = 'black'
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
-        // c.clip();
-        // c.drawImage(image, this.position.x, position.y)
     }
 }
 
@@ -88,7 +91,7 @@ let itemLocations = {
 const user = new Player(20, 50, 'orange');
 const user2 = new Player(canvas.width - 300, 100, 'blue')
 
-let init = () => {
+let reset = () => {
 
     user.position.x = 20;
     user.position.y = 50;
@@ -200,7 +203,7 @@ const collision = (player, plat) => {
         player.position.x + player.width > plat.position.x &&
         player.position.y < plat.position.y + plat.height && player.falling === true
     ) {
-        player.position.y = plat.position.y - player.height    //Idk why 28.6 but it works. I must've messed up somewhere
+        player.position.y = plat.position.y - player.height   //Idk why 28.6 but it works. I must've messed up somewhere
         player.velocity.y = -1;
         player.jumping = false;
         player.falling = false;
@@ -232,10 +235,7 @@ const collisionAll = () => {
 }
 
 const showAll = () => {
-    user2.show();
-    user.show();
 
-    item1.show();
 
     platBL.show();
     platBR.show();
@@ -243,6 +243,10 @@ const showAll = () => {
     floor.show();
     platTL.show();
     platTR.show();
+
+    user2.show();
+    user.show();
+    item1.show();
 }
 
 let num;
@@ -356,9 +360,10 @@ const playerMovement = (player, player2, item, controller) => {
         } else if (player === user2) {
             p2ScoreDisplay.innerHTML = 'Player 2 : ' + user2.score
         }
-        item.hide();
-        setTimeout(item.show(), 2000)
+        let interval = setInterval((item.hide(), 100))
+
         randomizeItem(num);
+        setTimeout(clearInterval(interval));
     }
 
 
@@ -366,10 +371,10 @@ const playerMovement = (player, player2, item, controller) => {
 let gameOver = () => {
     if (user.score === 1) {
         alert('Player 1 wins!')
-        init()
+        reset()
     } else if (user2.score === 10) {
         alert('Player 2 wins!')
-        init()
+        reset()
     }
 }
 let game = () => {
@@ -385,7 +390,7 @@ const animate = () => {
     c.clearRect(0, 0, canvas.width, canvas.height)
     showAll();
     game();
-    gameOver();
+    // gameOver();
 }
 
 animate();
