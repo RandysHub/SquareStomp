@@ -17,6 +17,7 @@
 
 <body>
     <div id="gameStart" class="popup">
+        <div id="logo"></div>
         <button onclick="unpop(popup)" id="singlePlayer" class="btn">Single Player</button>
         <button onclick="unpop(popup)" id="multiPlayer" class="btn">Multiplayer</button>
     </div>
@@ -28,12 +29,22 @@
     <div class="plat" id="platBR"></div>
     <div class="plat" id="platMid"></div>
     <div class="plat" id="floor"></div>
-    <div class="popup" id="gameOver">
+    <div class="popup" id="gameOver1">
+        <div id="p1Win"></div>
         <button onclick="unpop(popup)" id="singlePlayer" class="btn">Single Player</button>
         <button onclick="unpop(popup)" id="multiPlayer" class="btn">Multiplayer</button>
 
 
     </div>
+
+    <div class="popup" id="gameOver2">
+        <div id="p2Win"></div>
+        <button onclick="unpop(popup)" id="singlePlayer" class="btn goButton">Single Player</button>
+        <button onclick="unpop(popup)" id="multiPlayer" class="btn goButton">Multiplayer</button>
+
+
+    </div>
+
 
 </body>
 

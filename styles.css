@@ -13,6 +13,10 @@ body {
     height: 100vh;
 }
 
+button {
+    cursor: pointer;
+}
+
 canvas {
     background-image: url("/Platformer/images/background.jpg");
 }
@@ -26,12 +30,16 @@ canvas {
     justify-content: center;
     top: 3%;
     left: 28%;
-    background-color: grey;
+
+    background-color: #cc0066;
+    /* background-color: black; */
     height: 50px;
     width: 20vh;
-    border: 1px solid black;
-    border-radius: 40%;
-
+    /* border: 4px solid #cc0066; */
+    border: 4px solid black;
+    border-radius: 4px;
+    color: black
+        /* color: #cc0066; */
 }
 
 #p2 {
@@ -40,14 +48,16 @@ canvas {
     display: flex;
     align-content: center;
     justify-content: center;
-    top: 5%;
+    top: 3%;
     right: 28%;
-    background-color: grey;
     height: 50px;
     width: 20vh;
-    border: 1px solid black;
-    border-radius: 40%;
-
+    background-color: #00e699;
+    height: 50px;
+    width: 20vh;
+    border: 4px solid black;
+    border-radius: 4px;
+    color: black
 }
 
 /* Plat styling */
@@ -94,8 +104,8 @@ canvas {
 
 .popup {
 
-    width: 100%;
-    height: 100%;
+    width: 1854px;
+    height: 96%;
     /* background-image: url(); */
     /* background-color: whitesmoke; */
     /* border-radius: 6px; */
@@ -114,13 +124,14 @@ canvas {
 
 .open-popup {
     visibility: visible;
-    top: 52%;
+    top: 50%;
     transform: translate(-50%, -50%) scale(1);
     /* border: 4px; */
     /* border-color: cornflowerblue; */
     /* border-radius: 20%; */
     border-style: solid;
-    background-color: black;
+    background-image: url(./images/homeWP2.jpg);
+    background-image: contain;
 }
 
 .btn {
@@ -133,13 +144,13 @@ canvas {
     border-radius: 4px;
     transition-duration: 0.9s;
     font-size: 28px;
-    background-color: lightgray;
+    background-color: black;
 }
 
 
 #singlePlayer {
-    top: 25%;
-    left: 5%;
+    top: 45%;
+    left: 20%;
     border: 4px solid #cc0066;
     color: #cc0066;
 }
@@ -150,8 +161,8 @@ canvas {
 }
 
 #multiPlayer {
-    top: 25%;
-    right: 5%;
+    top: 45%;
+    right: 20%;
     border: 4px solid #00e699;
     color: #00e699;
 
@@ -159,11 +170,77 @@ canvas {
 
 #multiPlayer:hover {
     background-color: #00e699;
-    color: white;
+    color: black;
 }
 
-#gameOver {
-    background-color: black;
+#gameOver1 {
+    /* background-image: url(./images/playagain.jpg); */
+    background-color: none;
+    background-position: center;
+    height: 800px;
+    width: 800px;
+}
+
+#gameOver1 #singlePlayer {
+    width: 30%;
+    top: 50%;
+    left: 10%;
+
+}
+
+#gameOver1 #multiPlayer {
+    width: 30%;
+    top: 50%;
+    right: 10%;
+
+}
+
+#gameOver2 {
+    /* background-image: url(./images/playagain.jpg); */
+    background-color: none;
+    background-position: center;
+    height: 800px;
+    width: 800px;
+}
+
+#gameOver2 #singlePlayer {
+    width: 30%;
+    top: 50%;
+    left: 10%;
+
+}
+
+#gameOver2 #multiPlayer {
+    width: 30%;
+    top: 50%;
+    right: 10%;
+
+}
+
+
+#logo {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    left: 40%;
+    top: 5%;
+    background-image: url(./images/logo.png);
+}
+
+#p1Win {
+    position: absolute;
+    background-image: url(./images/P1Win.png);
+    height: 300px;
+    width: 550px;
+    left: 180px
+}
+
+#p2Win {
+    position: absolute;
+    background-image: url(./images/P2Win.png);
+    height: 300px;
+    width: 550px;
+    left: 180px
 }
 
 /* #gameStart {} */

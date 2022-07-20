@@ -395,14 +395,17 @@ const playerMovement = (player, player2, item, controller) => {
 
 }
 let gameOver = () => {
-    let gameOverPopup = document.querySelector('#gameOver')
+    let gameOverPopup1 = document.querySelector('#gameOver1')
+    let gameOverPopup2 = document.querySelector('#gameOver2')
+
+
     if (user.score === 1) {
-        pop(gameOverPopup)
+        pop(gameOverPopup1)
         // tried to make it so you can't move after the game ends
         // user.controller = controller3
         reset()
     } else if (user2.score === 10) {
-        pop(gameOverPopup)
+        pop(gameOverPopup2)
         reset()
         // user2.controller = controller3
     }
