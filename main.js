@@ -40,12 +40,10 @@ class Player {
         this.width = 50;
 
         c.fillStyle = this.color
-        // c.rect(this.position.x, this.position.y, this.width, this.height)
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
         c.lineWidth = 3;
         c.strokeStyle = 'black'
         c.strokeRect(this.position.x, this.position.y, this.width, this.height);
-        // c.clearRect(0, 0, canvas.width, canvas.height)
 
     }
     hide() {
@@ -220,7 +218,6 @@ const collision = (player, plat) => {
         player.falling = false;
     }
 }
-// user.height = 80
 const collisionAll = () => {
     collision(user, platBL)
     collision(user, platBR)
@@ -399,7 +396,7 @@ let gameOver = () => {
     let gameOverPopup2 = document.querySelector('#gameOver2')
 
 
-    if (user.score === 1) {
+    if (user.score === 10) {
         pop(gameOverPopup1)
         // tried to make it so you can't move after the game ends
         // user.controller = controller3
