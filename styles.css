@@ -18,7 +18,7 @@ button {
 }
 
 canvas {
-    background-image: url("/Platformer/images/background.jpg");
+    background-image: url("./images/background.jpg");
 }
 
 
