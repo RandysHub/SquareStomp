@@ -150,7 +150,7 @@ canvas {
 
 
 #singlePlayer {
-    top: 45%;
+    top: 10%;
     left: 20%;
     border: 4px solid #cc0066;
     color: #cc0066;
@@ -162,7 +162,7 @@ canvas {
 }
 
 #multiPlayer {
-    top: 45%;
+    top: 10%;
     right: 20%;
     border: 4px solid #00e699;
     color: #00e699;
@@ -224,7 +224,7 @@ canvas {
     width: 400px;
     height: 400px;
     left: 40%;
-    top: 5%;
+    top: 0%;
     background-image: url(./images/logo.png);
 }
 
@@ -242,6 +242,41 @@ canvas {
     height: 300px;
     width: 550px;
     left: 180px
+}
+
+#homeP {
+    position: absolute;
+    top: 40%;
+    left: 36.5%;
+    height: 380px;
+    width: 500px;
+    background-color: black;
+    border: 4px solid white;
+    color: white;
+    font-size: 25px;
+    padding: 5px 5px 5px 5px
+}
+
+#homeP p {
+    position: absolute;
+    margin: 10px 10px 10px 10px;
+}
+
+#para1 {
+
+    position: absolute;
+    top: 325px;
+    left: 100px;
+    color: #cc0066;
+}
+
+#paraSmall {
+
+    position: absolute;
+    top: 145px;
+    left: 315px;
+    color: #00e699;
+    font-size: 11px;
 }
 
 /* #gameStart {} */
