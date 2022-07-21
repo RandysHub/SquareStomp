@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./images/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Roboto+Slab:wght@300&display=swap"
         rel="stylesheet">
-    <title>Platformer</title>
+    <title>Square Stomp</title>
     <link rel="stylesheet" href="styles.css">
     <canvas></canvas>
 </head>
@@ -31,18 +32,19 @@
     <div class="plat" id="platBR"></div>
     <div class="plat" id="platMid"></div>
     <div class="plat" id="floor"></div>
+
     <div class="popup" id="gameOver1">
-        <div id="p1Win"></div>
-        <button onclick="unpop(popup)" id="singlePlayer" class="btn">Single Player</button>
-        <button onclick="unpop(popup)" id="multiPlayer" class="btn">Multiplayer</button>
+        <div id="p1Win2"></div>
+        <button onclick="unpop(popup)" class="btn goButton1">Single Player</button>
+        <button onclick="unpop(popup)" class="btn goButton2">Multiplayer</button>
 
 
     </div>
 
     <div class="popup" id="gameOver2">
         <div id="p2Win"></div>
-        <button onclick="unpop(popup)" id="singlePlayer" class="btn goButton">Single Player</button>
-        <button onclick="unpop(popup)" id="multiPlayer" class="btn goButton">Multiplayer</button>
+        <button onclick="unpop(popup)" id="singlePlayer2" class="btn goButton1">Single Player</button>
+        <button onclick="unpop(popup)" id="multiPlayer2" class="btn goButton2">Multiplayer</button>
 
 
     </div>

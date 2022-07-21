@@ -6,8 +6,12 @@ canvas.height = innerHeight - 4 //Idk what's going on but subtracting 4 or more 
 canvas.width = innerWidth;
 
 const popup = document.querySelector('#gameStart')
+const goPopup1 = document.querySelector('#gameOver1')
+const goPopup2 = document.querySelector('#gameOver2')
 const multi = document.querySelector('#multiPlayer')
 const single = document.querySelector('#singlePlayer')
+const goButton1 = document.querySelector('.goButton1')
+const goButton2 = document.querySelector('.goButton2')
 const pop = ele => {
     ele.classList.add('open-popup')
 }
@@ -104,15 +108,17 @@ let reset = () => {
 
     user.position.x = 20;
     user.position.y = 50;
-    user.score = 0
+    user.score = 0;
+    p1ScoreDisplay.innerHTML = 'Player 1 : ' + user.score
 
 
     user2.position.x = canvas.width - 300;
     user2.position.y = 100;
-    user2.score = 0
+    user2.score = 0;
+    p2ScoreDisplay.innerHTML = 'Player 2: ' + p2Score
 
-    item1.position.x = itemLocations.third.x
-    item1.position.y = itemLocations.third.y
+    item1.position.x = itemLocations.third.x;
+    item1.position.y = itemLocations.third.y;
 
 }
 //Scoreboard 
@@ -359,14 +365,6 @@ const playerMovement = (player, player2, item, controller) => {
 
         player.velocity.y -= 65
 
-        // Tried to give them health and kill them after 3 hits. It's still being dumb with colission stuff.
-        // player2.hp -= 1
-        // console.log(player2.hp)
-        // if (player2.hp === 0) {
-        //     player2.position.y = 0
-        //     player2.position.x = canvas.width / 2
-        //     player2.hp = 0
-        // }
     }
 
     // Bonking item
@@ -397,14 +395,12 @@ let gameOver = () => {
 
 
     if (user.score === 10) {
+        reset()
         pop(gameOverPopup1)
         // tried to make it so you can't move after the game ends
-        // user.controller = controller3
-        reset()
     } else if (user2.score === 10) {
-        pop(gameOverPopup2)
         reset()
-        // user2.controller = controller3
+        pop(gameOverPopup2)
     }
 }
 let game = () => {
@@ -445,4 +441,20 @@ multi.addEventListener('click', function () {
 })
 single.addEventListener('click', function () {
     animateSinglePlayer()
+})
+
+
+goButton1.addEventListener('click', function () {
+    unpop(goPopup1)
+    unpop(goPopup2)
+    unpop(document.querySelector('#singlePlayer2'))
+    unpop(document.querySelector('#p2Win'))
+    // animateSinglePlayer()
+    reset()
+})
+goButton2.addEventListener('click', function () {
+    unpop(goPopup1)
+    unpop(goPopup2)
+    animate()
+    reset()
 })
